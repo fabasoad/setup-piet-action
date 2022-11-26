@@ -3,8 +3,8 @@ name: 'Setup Pier'
 author: Yevhen Fabizhevskyi
 description: 'This GitHub action installs one of the Pier Programming Language interpreters called npiet.'
 branding:
-  icon: italic
-  color: yellow
+  icon: terminal
+  color: gray-dark
 inputs:
   version:
     description: 'npiet interpreter version.'

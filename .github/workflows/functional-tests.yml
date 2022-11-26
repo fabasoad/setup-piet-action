@@ -22,9 +22,6 @@ jobs:
       - uses: ./
         with:
           version: ${{ matrix.version }}
-      - name: Validate command
-        run: |
-          $Output = (npiet hi.png) | Out-String
-          echo $Output
-          &{If($Output.Substring(0,12) -ne 'Hi') {exit 1}}
-        shell: pwsh
+      - name: Run script
+        run: npiet hi.png
+        shell: sh

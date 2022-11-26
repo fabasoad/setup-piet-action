@@ -1,0 +1,30 @@
+---
+name: Functional Tests
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+
+jobs:
+  run-script:
+    name: Run script
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        os: ['windows-latest']
+        version: ['1.0', '1.1', '1.3']
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        with:
+          version: ${{ matrix.version }}
+      - name: Validate command
+        run: |
+          $Output = (npiet hi.png) | Out-String
+          echo $Output
+          &{If($Output.Substring(0,12) -ne 'Hi') {exit 1}}
+        shell: pwsh

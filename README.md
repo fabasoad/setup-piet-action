@@ -1,8 +1,8 @@
 # Setup Piet action
 
-![Release](https://img.shields.io/github/v/release/fabasoad/setup-pier-action?include_prereleases)
-![Functional Tests](https://github.com/fabasoad/setup-pier-action/workflows/Functional%20Tests/badge.svg)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/fabasoad/setup-pier-action/main.svg)](https://results.pre-commit.ci/latest/github/fabasoad/setup-pier-action/main)
+![Release](https://img.shields.io/github/v/release/fabasoad/setup-piet-action?include_prereleases)
+![Functional Tests](https://github.com/fabasoad/setup-piet-action/workflows/Functional%20Tests/badge.svg)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/fabasoad/setup-piet-action/main.svg)](https://results.pre-commit.ci/latest/github/fabasoad/setup-piet-action/main)
 
 This action installs one of the Piet Programming Language interpreters
 called [npiet](http://www.bertnase.de/npiet).
@@ -41,8 +41,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
-      - uses: fabasoad/setup-pier-action@main
-      - name: Hi
+      - uses: fabasoad/setup-piet-action@main
+      - name: Run script
         run: npiet hi.png
         shell: sh
 ```

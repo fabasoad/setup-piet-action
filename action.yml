@@ -3,8 +3,8 @@ name: 'Setup Pier'
 author: Yevhen Fabizhevskyi
 description: 'This GitHub action installs one of the Pier Programming Language interpreters called npiet.'
 branding:
-  icon: italic
-  color: yellow
+  icon: terminal
+  color: gray-dark
 inputs:
   version:
     description: 'npiet interpreter version.'
@@ -29,10 +29,13 @@ runs:
       shell: sh
     - name: Install npiet
       if: ${{ steps.info.outputs.NPIET_INSTALLED == 'false' && runner.os == 'Windows' }}
-      env:
-        DOWNLOAD_URL: http://www.bertnase.de/npiet/npiet-${{ inputs.version }}a-win32.zip
       run: |
-        Invoke-WebRequest -URI $Env:DOWNLOAD_URL -OutFile npiet.zip
+        if ("${{ inputs.version }}" -eq "1.1") {
+          $Version="${{ inputs.version }}"
+        } else {
+          $Version="${{ inputs.version }}a"
+        }
+        Invoke-WebRequest -URI "http://www.bertnase.de/npiet/npiet-$Version-win32.zip" -OutFile npiet.zip
         Expand-Archive npiet.zip -DestinationPath .
         Remove-Item -Path npiet.zip
         echo "${{ steps.info.outputs.NPIET_PATH }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append

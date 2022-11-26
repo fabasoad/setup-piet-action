@@ -10,7 +10,9 @@ called [npiet](http://www.bertnase.de/npiet).
 ## Prerequisites
 
 The following tools have to be installed for successful work of this GitHub action:
-[pip](https://pypi.org/project/pip).
+[PowerShell](https://learn.microsoft.com/en-us/powershell).
+
+> `Windows` is the only supported OS at this moment
 
 ## Inputs
 
@@ -47,7 +49,7 @@ jobs:
 
 ### Result
 
-```shell
+```text
 Run npiet hi.png
 Hi
 ```

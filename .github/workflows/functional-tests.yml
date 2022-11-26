@@ -12,19 +12,16 @@ jobs:
     name: Run script
     timeout-minutes: 5
     strategy:
+      fail-fast: false
       matrix:
         os: ['windows-latest']
-        version: ['1.0', '1.1', '1.3']
-      fail-fast: false
+        version: ['1.1', '1.3']
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: ./
         with:
           version: ${{ matrix.version }}
-      - name: Validate command
-        run: |
-          $Output = (npiet hi.png) | Out-String
-          echo $Output
-          &{If($Output.Substring(0,12) -ne 'Hi') {exit 1}}
-        shell: pwsh
+      - name: Run script
+        run: npiet hi.png
+        shell: sh

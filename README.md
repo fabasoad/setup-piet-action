@@ -18,7 +18,7 @@ The following tools have to be installed for successful work of this GitHub acti
 
 | Name    | Required | Description                                                                   | Default | Possible values |
 |---------|----------|-------------------------------------------------------------------------------|---------|-----------------|
-| version | No       | npiet version that can be found [here](http://www.bertnase.de/npiet/old.html) | `1.3`   | &lt;String&gt;  |
+| version | No       | npiet version that can be found [here](http://www.bertnase.de/npiet/old.html) | `1.3`   | `1.1`, `1.3`    |
 
 ## Example usage
 

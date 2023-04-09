@@ -1,5 +1,6 @@
 # Setup Piet action
 
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
 ![Release](https://img.shields.io/github/v/release/fabasoad/setup-piet-action?include_prereleases)
 ![Functional Tests](https://github.com/fabasoad/setup-piet-action/workflows/Functional%20Tests/badge.svg)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/fabasoad/setup-piet-action/main.svg)](https://results.pre-commit.ci/latest/github/fabasoad/setup-piet-action/main)

@@ -1,17 +1,17 @@
 ---
-name: 'Setup Piet'
+name: "Setup Piet"
 author: Yevhen Fabizhevskyi
-description: 'This GitHub action installs one of the Piet Programming Language interpreters called npiet.'
+description: "This GitHub action installs one of the Piet Programming Language interpreters called npiet."
 branding:
   icon: terminal
   color: gray-dark
 inputs:
   version:
-    description: 'npiet interpreter version.'
+    description: "npiet interpreter version."
     required: false
-    default: '1.3'
+    default: "1.3"
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Fail
       if: ${{ runner.os != 'Windows' }}

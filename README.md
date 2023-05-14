@@ -3,7 +3,7 @@
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
 ![Release](https://img.shields.io/github/v/release/fabasoad/setup-piet-action?include_prereleases)
 ![Functional Tests](https://github.com/fabasoad/setup-piet-action/workflows/Functional%20Tests/badge.svg)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/fabasoad/setup-piet-action/main.svg)](https://results.pre-commit.ci/latest/github/fabasoad/setup-piet-action/main)
+![pre-commit](https://github.com/fabasoad/setup-piet-action/actions/workflows/pre-commit.yml/badge.svg)
 
 This action installs one of the Piet Programming Language interpreters
 called [npiet](http://www.bertnase.de/npiet).
@@ -17,15 +17,17 @@ The following tools have to be installed for successful work of this GitHub acti
 
 ## Inputs
 
+<!-- prettier-ignore-start -->
 | Name    | Required | Description                                                                   | Default | Possible values |
 |---------|----------|-------------------------------------------------------------------------------|---------|-----------------|
 | version | No       | npiet version that can be found [here](http://www.bertnase.de/npiet/old.html) | `1.3`   | `1.1`, `1.3`    |
+<!-- prettier-ignore-end -->
 
 ## Example usage
 
 ### Input
 
-npiet should print "Hi" if to use this image as input:
+`npiet` should print "Hi" if to use this image as input:
 
 ![hi](./hi.png)
 

@@ -15,7 +15,7 @@ runs:
   steps:
     - name: Fail
       if: ${{ runner.os != 'Windows' }}
-      run: echo "::error::${{ runner.os }} ${{ runner.arch }} is not supported" && exit 1
+      run: echo "::error::${RUNNER_OS} ${RUNNER_ARCH} is not supported" && exit 1
       shell: sh
     - name: Collect info
       if: ${{ runner.os == 'Windows' }}
@@ -28,15 +28,17 @@ runs:
       shell: sh
     - name: Install npiet
       if: ${{ steps.info.outputs.NPIET_INSTALLED == 'false' && runner.os == 'Windows' }}
+      env:
+        INPUT_VERSION: "${{ inputs.version }}"
       run: |
-        if ("${{ inputs.version }}" -eq "1.1") {
-          $Version="${{ inputs.version }}"
+        if ($Env:INPUT_VERSION -eq "1.1") {
+          $Version=$Env:INPUT_VERSION
         } else {
-          $Version="${{ inputs.version }}a"
+          $Version=$Env:INPUT_VERSION + "a"
         }
         Invoke-WebRequest -URI "http://www.bertnase.de/npiet/npiet-$Version-win32.zip" -OutFile npiet.zip
         Expand-Archive npiet.zip -DestinationPath .
         Remove-Item -Path npiet.zip
-        echo "${{ steps.info.outputs.NPIET_PATH }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        echo "${{ steps.info.outputs.NPIET_PATH }}" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
       shell: pwsh
       working-directory: ${{ steps.info.outputs.NPIET_PATH }}

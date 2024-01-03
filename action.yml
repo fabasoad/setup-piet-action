@@ -31,14 +31,14 @@ runs:
       env:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
-        if ("${INPUT_VERSION}" -eq "1.1") {
-          $Version="${INPUT_VERSION}"
+        if ($Env:INPUT_VERSION -eq "1.1") {
+          $Version=$Env:INPUT_VERSION
         } else {
-          $Version="${INPUT_VERSION}a"
+          $Version=$Env:INPUT_VERSION + "a"
         }
         Invoke-WebRequest -URI "http://www.bertnase.de/npiet/npiet-$Version-win32.zip" -OutFile npiet.zip
         Expand-Archive npiet.zip -DestinationPath .
         Remove-Item -Path npiet.zip
-        echo "${{ steps.info.outputs.NPIET_PATH }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        echo "${{ steps.info.outputs.NPIET_PATH }}" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
       shell: pwsh
       working-directory: ${{ steps.info.outputs.NPIET_PATH }}

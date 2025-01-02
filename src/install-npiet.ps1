@@ -15,6 +15,5 @@ Invoke-WebRequest -URI "http://www.bertnase.de/npiet/npiet-$version-win32.zip" -
 Expand-Archive "$file_path" -DestinationPath "$bin_path"
 # Remove archive file
 Remove-Item -Path "$file_path"
-Get-ChildItem -Path "$bin_path" -Force
 # Add to PATH
 echo "$bin_path" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append

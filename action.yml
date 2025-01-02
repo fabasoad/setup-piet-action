@@ -52,6 +52,6 @@ runs:
     - name: Print version
       run: |
         . ./logging.sh
-        log_info "npiet is installed at $(which npiet)"
+        log_info "npiet is located at $(which npiet)"
       shell: sh
       working-directory: "${{ github.action_path }}/src/lib"

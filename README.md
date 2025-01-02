@@ -29,7 +29,7 @@ The following tools have to be installed for successful work of this GitHub acti
 ```yaml
 - uses: fabasoad/setup-piet-action@v0
   with:
-    # (Optional) npiet interpreter version. Defaults to the latest version.
+    # (Optional) npiet interpreter version. Defaults to "1.3" version.
     version: "1.3"
     # (Optional) If "false" skips installation if npiet is already installed.
     # If "true" installs npiet in any case. Defaults to "false".

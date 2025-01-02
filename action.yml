@@ -47,12 +47,12 @@ runs:
         } else {
           $Version=$Env:INPUT_VERSION + "a"
         }
-        Invoke-WebRequest -URI "http://www.bertnase.de/npiet/npiet-$Version-win32.zip" -OutFile npiet.zip
-        Expand-Archive npiet.zip -DestinationPath .
-        Remove-Item -Path npiet.zip
+        New-Item -Path "${{ steps.info.outputs.bin-dir }}" -ItemType Directory -Force
+        Invoke-WebRequest -URI "http://www.bertnase.de/npiet/npiet-$Version-win32.zip" -OutFile "${{ steps.info.outputs.bin-dir }}\npiet.zip"
+        Expand-Archive "${{ steps.info.outputs.bin-dir }}\npiet.zip" -DestinationPath "${{ steps.info.outputs.bin-dir }}"
+        Remove-Item -Path "${{ steps.info.outputs.bin-dir }}\npiet.zip"
         echo "${{ steps.info.outputs.bin-path }}" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
       shell: pwsh
-      working-directory: ${{ steps.info.outputs.bin-path }}
 
     - name: Print version
       run: npiet --version

@@ -2,14 +2,19 @@
 name: Functional Tests
 
 on: # yamllint disable-line rule:truthy
-  pull_request:
-    paths:
-      - "action.yml"
-      - "hi.png"
-      - ".github/workflows/functional-tests.yml"
   push:
     branches:
-      - "main"
+      - main
+  pull_request:
+    paths:
+      - .github/workflows/functional-tests.yml
+      - src/**
+      - hi.png
+      - action.yml
+  schedule:
+    # Every Friday at 09:00 JST
+    - cron: "0 0 * * 5"
+  workflow_dispatch: {}
 
 defaults:
   run:
@@ -28,8 +33,54 @@ jobs:
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
       - name: Setup Piet
+        id: setup-piet
         uses: ./
         with:
           version: ${{ matrix.version }}
-      - name: Run script
-        run: npiet hi.png
+      - name: Test action completion
+        run: |
+          test_equal() {
+            if [ "${2}" != "${3}" ]; then
+              echo "::error title=${1}::Expected: ${3}. Actual: ${2}."
+              exit 1
+            fi
+          }
+          test_equal "npiet should be installed" \
+            "${{ steps.setup-piet.outputs.installed }}" \
+            "true"
+      - name: Validate command
+        run: |
+          [ "$(npiet hi.png)" = "Hi" ] || exit 1
+  test-force:
+    name: Test force
+    runs-on: windows-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        force: ["true", "false"]
+    steps:
+      - name: Checkout ${{ github.repository }}
+        uses: actions/checkout@v4
+      - name: Setup piet 1
+        id: setup-piet-1
+        uses: ./
+      - name: Setup piet 2
+        id: setup-piet-2
+        uses: ./
+        with:
+          force: ${{ matrix.force }}
+      - name: Test action completion
+        run: |
+          test_equal() {
+            if [ "${2}" != "${3}" ]; then
+              echo "::error title=${1}::Expected: ${3}. Actual: ${2}."
+              exit 1
+            fi
+          }
+          test_equal "Wrong \"installed\" output from setup-piet-1" \
+            "${{ steps.setup-piet-1.outputs.installed }}" \
+            "true"
+          test_equal "Wrong \"installed\" output from setup-piet-2" \
+            "${{ steps.setup-piet-2.outputs.installed }}" \
+            "${{ matrix.force }}"

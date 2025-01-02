@@ -42,18 +42,12 @@ runs:
       env:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
-        if ($Env:INPUT_VERSION -eq "1.1") {
-          $Version=$Env:INPUT_VERSION
-        } else {
-          $Version=$Env:INPUT_VERSION + "a"
-        }
-        New-Item -Path "${{ steps.info.outputs.bin-dir }}" -ItemType Directory -Force
-        Invoke-WebRequest -URI "http://www.bertnase.de/npiet/npiet-$Version-win32.zip" -OutFile "${{ steps.info.outputs.bin-dir }}\npiet.zip"
-        Expand-Archive "${{ steps.info.outputs.bin-dir }}\npiet.zip" -DestinationPath "${{ steps.info.outputs.bin-dir }}"
-        Remove-Item -Path "${{ steps.info.outputs.bin-dir }}\npiet.zip"
-        echo "${{ steps.info.outputs.bin-path }}" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
+        .\install-npiet.ps1 \
+          "$Env:INPUT_VERSION" \
+          "${{ steps.info.outputs.bin-dir }}" \
+          "${{ steps.info.outputs.bin-path }}"
       shell: pwsh
 
     - name: Print version
-      run: npiet --version
+      run: npiet -v
       shell: sh

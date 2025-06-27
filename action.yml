@@ -25,7 +25,9 @@ runs:
   steps:
     - name: Fail
       if: ${{ runner.os != 'Windows' }}
-      run: echo "::error::${RUNNER_OS} ${RUNNER_ARCH} is not supported" && exit 1
+      run: |
+        echo "::error title=OS is not supported::${RUNNER_OS} ${RUNNER_ARCH} is not supported"
+        exit 1
       shell: sh
 
     - name: Collect info
@@ -49,7 +51,7 @@ runs:
       shell: pwsh
       working-directory: "${{ github.action_path }}/src"
 
-    - name: Print version
+    - name: Print location
       run: |
         . ./logging.sh
         log_info "npiet is located at $(which npiet)"

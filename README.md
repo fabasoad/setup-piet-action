@@ -77,3 +77,7 @@ jobs:
 Run npiet hi.png
 Hi
 ```
+
+## Contributions
+
+![Alt](https://repobeats.axiom.co/api/embed/19fc207a8b468fcb30d29651dbe1490364101f55.svg "Repobeats analytics image")

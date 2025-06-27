@@ -26,7 +26,7 @@ main() {
   bin_dir="npiet_$(date +%s)"
   echo "bin-dir=${bin_dir}" >> "$GITHUB_OUTPUT"
 
-  bin_path="${RUNNER_TEMP}\npiet_$(date +%s)"
+  bin_path="${RUNNER_TEMP}\\${bin_dir}"
   echo "bin-path=${bin_path}" >> "$GITHUB_OUTPUT"
 }
 

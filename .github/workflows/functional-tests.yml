@@ -82,8 +82,8 @@ jobs:
           force: ${{ matrix.force }}
       - name: Test action completion
         env:
-          STEP_SETUP_PIET_1_OUTPUT_INSTALLED: "${{ steps.setup-piet.outputs-1.installed }}"
-          STEP_SETUP_PIET_2_OUTPUT_INSTALLED: "${{ steps.setup-piet.outputs-2.installed }}"
+          STEP_SETUP_PIET_1_OUTPUT_INSTALLED: "${{ steps.setup-piet-1.outputs.installed }}"
+          STEP_SETUP_PIET_2_OUTPUT_INSTALLED: "${{ steps.setup-piet-2.outputs.installed }}"
         run: |
           test_equal() {
             if [ "${2}" != "${3}" ]; then

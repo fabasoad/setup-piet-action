@@ -24,6 +24,8 @@ jobs:
   run-script:
     name: Run script
     timeout-minutes: 5
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -31,13 +33,17 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout ${{ github.repository }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: "false"
       - name: Setup Piet
         id: setup-piet
         uses: ./
         with:
           version: ${{ matrix.version }}
       - name: Test action completion
+        env:
+          STEP_SETUP_PIET_OUTPUT_INSTALLED: "${{ steps.setup-piet.outputs.installed }}"
         run: |
           test_equal() {
             if [ "${2}" != "${3}" ]; then
@@ -46,7 +52,7 @@ jobs:
             fi
           }
           test_equal "npiet should be installed" \
-            "${{ steps.setup-piet.outputs.installed }}" \
+            "${STEP_SETUP_PIET_OUTPUT_INSTALLED}" \
             "true"
       - name: Validate command
         run: |
@@ -55,13 +61,17 @@ jobs:
     name: Test force
     runs-on: windows-latest
     timeout-minutes: 5
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
         force: ["true", "false"]
     steps:
       - name: Checkout ${{ github.repository }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: "false"
       - name: Setup piet 1
         id: setup-piet-1
         uses: ./
@@ -71,6 +81,9 @@ jobs:
         with:
           force: ${{ matrix.force }}
       - name: Test action completion
+        env:
+          STEP_SETUP_PIET_1_OUTPUT_INSTALLED: "${{ steps.setup-piet.outputs-1.installed }}"
+          STEP_SETUP_PIET_2_OUTPUT_INSTALLED: "${{ steps.setup-piet.outputs-2.installed }}"
         run: |
           test_equal() {
             if [ "${2}" != "${3}" ]; then
@@ -79,8 +92,8 @@ jobs:
             fi
           }
           test_equal "Wrong \"installed\" output from setup-piet-1" \
-            "${{ steps.setup-piet-1.outputs.installed }}" \
+            "${STEP_SETUP_PIET_1_OUTPUT_INSTALLED}" \
             "true"
           test_equal "Wrong \"installed\" output from setup-piet-2" \
-            "${{ steps.setup-piet-2.outputs.installed }}" \
+            "${STEP_SETUP_PIET_2_OUTPUT_INSTALLED}" \
             "${{ matrix.force }}"

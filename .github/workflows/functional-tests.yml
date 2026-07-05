@@ -29,13 +29,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.1", "1.3"]
-    runs-on: windows-latest
+        os: ["ubuntu", "windows", "macos"]
+        version: ["1.1", "1.3", "1.3f"]
+    runs-on: ${{ matrix.os }}-latest
     steps:
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v7
         with:
           persist-credentials: "false"
+      - name: Install libpng
+        run: ${{ case(matrix.os == 'ubuntu', 'sudo apt-get install -y libpng-dev', matrix.os == 'macos', 'brew install libpng', 'pacman -S --noconfirm mingw-w64-x86_64-libpng') }} # yamllint disable-line
+        shell: sh
       - name: Setup Piet
         id: setup-piet
         uses: ./
@@ -59,7 +63,7 @@ jobs:
           [ "$(npiet hi.png)" = "Hi" ] || exit 1
   test-force:
     name: Test force
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read

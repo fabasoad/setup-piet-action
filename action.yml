@@ -9,7 +9,7 @@ inputs:
   version:
     description: npiet interpreter version.
     required: false
-    default: "1.3"
+    default: "1.3f"
   force:
     description: |
       If "false" skips installation if npiet is already installed. If "true"
@@ -23,12 +23,13 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Fail
-      if: ${{ runner.os != 'Windows' }}
-      run: |
-        echo "::error title=OS is not supported::${RUNNER_OS} ${RUNNER_ARCH} is not supported"
-        exit 1
+    - name: Validate inputs
+      env:
+        INPUT_VERSION: "${{ inputs.version }}"
+        INPUT_FORCE: "${{ inputs.force }}"
+      run: ./validate-inputs.sh "${INPUT_VERSION}" "${INPUT_FORCE}"
       shell: sh
+      working-directory: "${{ github.action_path }}/src"
 
     - name: Collect info
       id: info
@@ -43,14 +44,9 @@ runs:
       id: install-npiet
       env:
         INPUT_VERSION: "${{ inputs.version }}"
-        STEP_INFO_OUTPUT_BIN_DIR: "${{ steps.info.outputs.bin-dir }}"
         STEP_INFO_OUTPUT_BIN_PATH: "${{ steps.info.outputs.bin-path }}"
-      run: |
-        .\install-npiet.ps1 `
-          "$Env:INPUT_VERSION" `
-          "$Env:STEP_INFO_OUTPUT_BIN_DIR" `
-          "$Env:STEP_INFO_OUTPUT_BIN_PATH" `
-      shell: pwsh
+      run: ./install-npiet.sh "${INPUT_VERSION}" "${STEP_INFO_OUTPUT_BIN_PATH}"
+      shell: sh
       working-directory: "${{ github.action_path }}/src"
 
     - name: Print location

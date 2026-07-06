@@ -31,6 +31,10 @@ runs:
       shell: sh
       working-directory: "${{ github.action_path }}/src"
 
+    - name: Install libpng
+      run: ${{ case(matrix.os == 'ubuntu', 'sudo apt-get install -y libpng-dev', matrix.os == 'macos', 'brew install libpng', 'choco install libpng -y') }} # yamllint disable-line
+      shell: ${{ case(runner.os == 'Windows', 'pwsh', 'sh') }}
+
     - name: Collect info
       id: info
       env:

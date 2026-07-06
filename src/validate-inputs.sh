@@ -10,7 +10,7 @@ main() {
   input_version="${1}"
   input_force="${2}"
 
-  valid_versions="1.2a 1.2b 1.3a 1.3b 1.3c 1.3d 1.3e 1.3f"
+  valid_versions="1.3a 1.3b 1.3c 1.3d 1.3e 1.3f"
   found="false"
   for v in ${valid_versions}; do
     if [ "${input_version}" = "${v}" ]; then

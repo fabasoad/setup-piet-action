@@ -30,16 +30,13 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu", "windows", "macos"]
-        version: ["1.2a", "1.2b", "1.3f"]
+        version: ["1.3a", "1.3b", "1.3f"]
     runs-on: ${{ matrix.os }}-latest
     steps:
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v7
         with:
           persist-credentials: "false"
-      - name: Install libpng
-        run: ${{ case(matrix.os == 'ubuntu', 'sudo apt-get install -y libpng-dev', matrix.os == 'macos', 'brew install libpng', 'choco install libpng -y') }} # yamllint disable-line
-        shell: sh
       - name: Setup Piet
         id: setup-piet
         uses: ./

@@ -11,6 +11,7 @@ on: # yamllint disable-line rule:truthy
       - src/**
       - hi.png
       - action.yml
+      - .gitattributes
   schedule:
     # Every Friday at 09:00 JST
     - cron: "0 0 * * 5"

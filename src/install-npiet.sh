@@ -56,6 +56,7 @@ main() {
     png_flags="-DHAVE_PNG_H"
     png_include="-I/c/msys64/mingw64/include"
     png_lib="-L/c/msys64/mingw64/lib -lpng"
+    compiler="/c/msys64/mingw64/bin/gcc"
   fi
 
   log_info "Compiling npiet ${input_version} from source..."

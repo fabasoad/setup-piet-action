@@ -32,7 +32,7 @@ runs:
       working-directory: "${{ github.action_path }}/src"
 
     - name: Install libpng
-      run: ${{ case(matrix.os == 'ubuntu', 'sudo apt-get install -y libpng-dev', matrix.os == 'macos', 'brew install libpng', 'choco install libpng -y') }} # yamllint disable-line
+      run: ${{ case(runner.os == 'Linux', 'sudo apt-get install -y libpng-dev', runner.os == 'Windows', 'choco install libpng -y', 'brew install libpng') }} # yamllint disable-line
       shell: ${{ case(runner.os == 'Windows', 'pwsh', 'sh') }}
 
     - name: Collect info

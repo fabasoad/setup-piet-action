@@ -65,7 +65,7 @@ jobs:
     name: Piet
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: fabasoad/setup-piet-action@v0
       - name: Run script
         run: npiet hi.png

@@ -9,7 +9,7 @@ inputs:
   version:
     description: npiet interpreter version.
     required: false
-    default: "1.3"
+    default: "1.3f"
   force:
     description: |
       If "false" skips installation if npiet is already installed. If "true"
@@ -23,12 +23,17 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Fail
-      if: ${{ runner.os != 'Windows' }}
-      run: |
-        echo "::error title=OS is not supported::${RUNNER_OS} ${RUNNER_ARCH} is not supported"
-        exit 1
+    - name: Validate inputs
+      env:
+        INPUT_VERSION: "${{ inputs.version }}"
+        INPUT_FORCE: "${{ inputs.force }}"
+      run: ./validate-inputs.sh "${INPUT_VERSION}" "${INPUT_FORCE}"
       shell: sh
+      working-directory: "${{ github.action_path }}/src"
+
+    - name: Install libpng
+      run: ${{ case(runner.os == 'Linux', 'sudo apt-get install -y libpng-dev', runner.os == 'Windows', 'C:\msys64\usr\bin\pacman.exe -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-libpng', 'brew install libpng') }} # yamllint disable-line
+      shell: ${{ case(runner.os == 'Windows', 'pwsh', 'sh') }}
 
     - name: Collect info
       id: info
@@ -43,12 +48,9 @@ runs:
       id: install-npiet
       env:
         INPUT_VERSION: "${{ inputs.version }}"
-      run: |
-        .\install-npiet.ps1 `
-          "$Env:INPUT_VERSION" `
-          "${{ steps.info.outputs.bin-dir }}" `
-          "${{ steps.info.outputs.bin-path }}"
-      shell: pwsh
+        STEP_INFO_OUTPUT_BIN_PATH: "${{ steps.info.outputs.bin-path }}"
+      run: ./install-npiet.sh "${INPUT_VERSION}" "${STEP_INFO_OUTPUT_BIN_PATH}"
+      shell: sh
       working-directory: "${{ github.action_path }}/src"
 
     - name: Print location

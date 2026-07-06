@@ -11,6 +11,7 @@ on: # yamllint disable-line rule:truthy
       - src/**
       - hi.png
       - action.yml
+      - .gitattributes
   schedule:
     # Every Friday at 09:00 JST
     - cron: "0 0 * * 5"
@@ -24,20 +25,27 @@ jobs:
   run-script:
     name: Run script
     timeout-minutes: 5
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.1", "1.3"]
-    runs-on: windows-latest
+        os: ["ubuntu", "windows", "macos"]
+        version: ["1.3a", "1.3b", "1.3c", "1.3d", "1.3e", "1.3f"]
+    runs-on: ${{ matrix.os }}-latest
     steps:
       - name: Checkout ${{ github.repository }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: "false"
       - name: Setup Piet
         id: setup-piet
         uses: ./
         with:
           version: ${{ matrix.version }}
       - name: Test action completion
+        env:
+          STEP_SETUP_PIET_OUTPUT_INSTALLED: "${{ steps.setup-piet.outputs.installed }}"
         run: |
           test_equal() {
             if [ "${2}" != "${3}" ]; then
@@ -46,22 +54,26 @@ jobs:
             fi
           }
           test_equal "npiet should be installed" \
-            "${{ steps.setup-piet.outputs.installed }}" \
+            "${STEP_SETUP_PIET_OUTPUT_INSTALLED}" \
             "true"
       - name: Validate command
         run: |
           [ "$(npiet hi.png)" = "Hi" ] || exit 1
   test-force:
     name: Test force
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
         force: ["true", "false"]
     steps:
       - name: Checkout ${{ github.repository }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: "false"
       - name: Setup piet 1
         id: setup-piet-1
         uses: ./
@@ -71,6 +83,9 @@ jobs:
         with:
           force: ${{ matrix.force }}
       - name: Test action completion
+        env:
+          STEP_SETUP_PIET_1_OUTPUT_INSTALLED: "${{ steps.setup-piet-1.outputs.installed }}"
+          STEP_SETUP_PIET_2_OUTPUT_INSTALLED: "${{ steps.setup-piet-2.outputs.installed }}"
         run: |
           test_equal() {
             if [ "${2}" != "${3}" ]; then
@@ -79,8 +94,8 @@ jobs:
             fi
           }
           test_equal "Wrong \"installed\" output from setup-piet-1" \
-            "${{ steps.setup-piet-1.outputs.installed }}" \
+            "${STEP_SETUP_PIET_1_OUTPUT_INSTALLED}" \
             "true"
           test_equal "Wrong \"installed\" output from setup-piet-2" \
-            "${{ steps.setup-piet-2.outputs.installed }}" \
+            "${STEP_SETUP_PIET_2_OUTPUT_INSTALLED}" \
             "${{ matrix.force }}"

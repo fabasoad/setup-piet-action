@@ -23,10 +23,7 @@ main() {
   fi
   echo "bin-installed=${bin_installed}" >> "$GITHUB_OUTPUT"
 
-  bin_dir="npiet_$(date +%s)"
-  echo "bin-dir=${bin_dir}" >> "$GITHUB_OUTPUT"
-
-  bin_path="${RUNNER_TEMP}\\${bin_dir}"
+  bin_path="${RUNNER_TEMP}/npiet_$(date +%s)"
   echo "bin-path=${bin_path}" >> "$GITHUB_OUTPUT"
 }
 

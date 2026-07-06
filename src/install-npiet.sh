@@ -51,6 +51,10 @@ main() {
     png_flags="-DHAVE_PNG_H"
     png_include="-I/mingw64/include"
     png_lib="-L/mingw64/lib -lpng"
+  elif [ -f /c/msys64/mingw64/include/png.h ]; then
+    png_flags="-DHAVE_PNG_H"
+    png_include="-I/c/msys64/mingw64/include"
+    png_lib="-L/c/msys64/mingw64/lib -lpng"
   fi
 
   log_info "Compiling npiet ${input_version} from source..."
@@ -59,6 +63,10 @@ main() {
   log_info "Compiled successfully to ${out_file}"
 
   echo "${bin_path}" >> "$GITHUB_PATH"
+
+  if [ -d /c/msys64/mingw64/bin ]; then
+    echo "C:\\msys64\\mingw64\\bin" >> "$GITHUB_PATH"
+  fi
 }
 
 main "$@"

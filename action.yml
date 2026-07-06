@@ -32,7 +32,7 @@ runs:
       working-directory: "${{ github.action_path }}/src"
 
     - name: Install libpng
-      run: ${{ case(runner.os == 'Linux', 'sudo apt-get install -y libpng-dev', runner.os == 'Windows', 'C:\msys64\usr\bin\pacman.exe -S --noconfirm mingw-w64-x86_64-libpng', 'brew install libpng') }} # yamllint disable-line
+      run: ${{ case(runner.os == 'Linux', 'sudo apt-get install -y libpng-dev', runner.os == 'Windows', 'C:\msys64\usr\bin\pacman.exe -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-libpng', 'brew install libpng') }} # yamllint disable-line
       shell: ${{ case(runner.os == 'Windows', 'pwsh', 'sh') }}
 
     - name: Collect info

@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 SCRIPT_PATH=$(realpath "$0")
 SRC_DIR_PATH=$(dirname "$SCRIPT_PATH")
@@ -59,7 +60,7 @@ main() {
 
   log_info "Compiling npiet ${input_version} from source..."
   # shellcheck disable=SC2086
-  "${compiler}" ${png_flags} ${png_include} -o "${out_file}" "${src_file}" ${png_lib}
+  "${compiler}" ${png_flags} ${png_include} -Wno-incompatible-pointer-types -o "${out_file}" "${src_file}" ${png_lib}
   log_info "Compiled successfully to ${out_file}"
 
   echo "${bin_path}" >> "$GITHUB_PATH"
